@@ -6,7 +6,16 @@ export const environment = {
   production: false,
 
   cardimgs: [
-    'assets/images/cards/angular.png'
+    'assets/images/cards/angular.png',
+    'assets/images/cards/d3.png',
+    'assets/images/cards/jenkins.png',
+    'assets/images/cards/postcss.png',
+    'assets/images/cards/react.png',
+    'assets/images/cards/redux.png',
+    'assets/images/cards/sass.png',
+    'assets/images/cards/supercharge.png',
+    'assets/images/cards/ts.png',
+    'assets/images/cards/webpack.png'
   ]
 };
 

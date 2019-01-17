@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Cardstate } from '../cardstate.enum';
+import { Card, Cardstate } from '../card';
 
 @Component({
   selector: 'app-card',
@@ -9,8 +9,7 @@ import { Cardstate } from '../cardstate.enum';
 })
 export class CardComponent implements OnInit {
 
-  @Input() no: number;
-  @Input() state: Cardstate;
+  @Input() card: Card;
 
   @Output() cardClick = new EventEmitter();
 
@@ -19,13 +18,17 @@ export class CardComponent implements OnInit {
   ngOnInit() {
   }
 
+  get class() {
+    return this.card.state === Cardstate.Ready ? 'card bg-dark' : 'card';
+  }
+
   get src() {
-    const visibleImg = environment.cardimgs[this.no % environment.cardimgs.length];
+    const visibleImg = environment.cardimgs[this.card.no % environment.cardimgs.length];
     const blankImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    return this.state === Cardstate.Closed ? blankImg : visibleImg;
+    return this.card.state === Cardstate.Closed ? blankImg : visibleImg;
   }
 
   onClick() {
-    if (this.state === Cardstate.Closed) { this.cardClick.emit(this.no); }
+    if (this.card.state === Cardstate.Closed) { this.cardClick.emit(this.card.no); }
   }
 }
