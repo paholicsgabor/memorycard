@@ -1,11 +1,22 @@
-<h1>
-  Supercharge
-</h1>
-<h2>
-  Memory Game
-</h2>
-<p>Deck size:</p>
-<select [(ngModel)]="selectedsize">
-  <option *ngFor="let s of decksizes">{{s}}</option>
-</select>
-<button (click)="newGame()">Start New Game</button>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="navbar-brand">
+    <img src="assets/images/cards/supercharge.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    Memory Game
+  </div>
+</nav>
+
+<div class="card text-center">
+  <div class="card-body">
+    <h1 class="card-title">SUPERCHARGE</h1>
+    <h2 class="card-title">Memory Game</h2>
+    <p class="card-text">Deck size:</p>
+
+    <div class="form">
+      <select class="custom-select" style="width:100px;" [(ngModel)]="selectedsize">
+        <option *ngFor="let s of decksizes">{{s}}</option>
+      </select>
+      <button class="btn btn-danger my-2 my-sm-0" (click)="New()">Start New Game</button>
+    </div>
+  </div>
+</div>
+

@@ -21,7 +21,7 @@ export class LandingComponent implements OnInit {
     this.router.navigateByUrl('/game');
   }
 
-  newGame() {
+  New() {
     this.game.initGame(this.selectedsize);
     this.navigateToGame();
   }
