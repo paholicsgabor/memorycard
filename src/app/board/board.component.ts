@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Card } from '../card';
+import { Gamestate } from '../gamestate';
 import { GameService } from '../game.service';
 import { Observable } from 'rxjs';
 
@@ -10,12 +10,16 @@ import { Observable } from 'rxjs';
 })
 export class BoardComponent implements OnInit {
 
-  cards$: Observable<Card[]>;
+  state$: Observable<Gamestate>;
 
   constructor(private game: GameService) { }
 
   ngOnInit() {
-    this.cards$ = this.game.cards$;
+    this.state$ = this.game.state$;
+  }
+
+  Restart() {
+    this.game.restartGame();
   }
 
 }

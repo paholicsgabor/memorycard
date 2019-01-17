@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Card, Cardstate } from './card';
+import { Gamestate } from './gamestate';
 import { ReplaySubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,29 +8,36 @@ import { ReplaySubject, Observable } from 'rxjs';
 })
 export class GameService {
 
-  private _cards$ = new ReplaySubject<Array<Card>>(1);
-  private cards: Array<Card>;
+  private _state$ = new ReplaySubject<Gamestate>(1);
+  private state: Gamestate;
 
+  get loaded(): boolean {
+    return this.state ? true : false;
+  }
 
-  get cards$(): Observable<Array<Card>> {
-    return this._cards$;
+  get state$(): Observable<Gamestate> {
+    return this._state$;
   }
 
   constructor() {
-    this.initGame(10);
+    const saved = localStorage.getItem('state');
+    if (saved) {
+      this.state = JSON.parse(saved);
+      this._state$.next(this.state);
+    }
 
   }
 
   private getOpenIndex(): Array<number> {
     const result = [];
-    for (let i = 0; i < this.cards.length; i++) {
-      if (this.cards[i].state === Cardstate.Open) { result.push(i); }
+    for (let i = 0; i < this.state.cards.length; i++) {
+      if (this.state.cards[i].state === Cardstate.Open) { result.push(i); }
     }
     return result;
   }
 
   private checkEqual(i: number, j: number): boolean {
-    if (this.cards[i].no === this.cards[j].no) {
+    if (this.state.cards[i].no === this.state.cards[j].no) {
       return true;
     } else {
       return false;
@@ -43,6 +51,11 @@ export class GameService {
     }
   }
 
+  restartGame() {
+    const n = this.state.cards.length;
+    this.initGame(n);
+  }
+
   initGame(n: number) {
     const numbers = [];
     for (let i = 0; i < n / 2; i++) {
@@ -51,11 +64,19 @@ export class GameService {
     }
     this.shuffleArray(numbers);
     console.log(numbers);
-    this.cards = [];
+    this.state = this.state ? { cards: [], tries: 0, best: this.state.best } : { cards: [], tries: 0, best: 0 };
     for (let i = 0; i < n; i++) {
-      this.cards.push({ no: numbers[i], state: Cardstate.Closed });
+      this.state.cards.push({ no: numbers[i], state: Cardstate.Closed });
     }
-    this._cards$.next(this.cards);
+    this._state$.next(this.state);
+  }
+
+  private checkEnd() {
+    for (let i = 0; i < this.state.cards.length; i++) {
+      if (this.state.cards[i].state !== Cardstate.Ready) { return; }
+    }
+    this.state.best = this.state.tries;
+
   }
 
   cardClick(i: number) {
@@ -64,23 +85,25 @@ export class GameService {
 
     switch (open.length) {
       case 0:
-        this.cards[i].state = Cardstate.Open;
+        this.state.cards[i].state = Cardstate.Open;
         break;
       case 1:
+        this.state.tries++;
         if (this.checkEqual(i, open[0])) {
-          this.cards[i].state = Cardstate.Ready;
-          this.cards[open[0]].state = Cardstate.Ready;
+          this.state.cards[i].state = Cardstate.Ready;
+          this.state.cards[open[0]].state = Cardstate.Ready;
+          this.checkEnd();
         } else {
-          this.cards[i].state = Cardstate.Open;
+          this.state.cards[i].state = Cardstate.Open;
         }
         break;
       case 2:
-        this.cards[i].state = Cardstate.Open;
-        this.cards[open[0]].state = Cardstate.Closed;
-        this.cards[open[1]].state = Cardstate.Closed;
+        this.state.cards[i].state = Cardstate.Open;
+        this.state.cards[open[0]].state = Cardstate.Closed;
+        this.state.cards[open[1]].state = Cardstate.Closed;
         break;
     }
-    this._cards$.next(this.cards);
-
+    this._state$.next(this.state);
+    localStorage.setItem('state', JSON.stringify(this.state));
   }
 }

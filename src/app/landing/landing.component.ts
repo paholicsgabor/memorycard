@@ -14,11 +14,16 @@ export class LandingComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    if (this.game.loaded) { this.navigateToGame(); }
+  }
+
+  navigateToGame() {
+    this.router.navigateByUrl('/game');
   }
 
   newGame() {
     this.game.initGame(this.selectedValue);
-    this.router.navigateByUrl('/game');
+    this.navigateToGame();
   }
 
 }
