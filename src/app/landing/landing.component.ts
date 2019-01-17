@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent implements OnInit {
-  size = [6, 8, 10, 12, 14, 16, 18, 20];
-  selectedValue = 12;
+  decksizes = [6, 8, 10, 12, 14, 16, 18, 20];
+  selectedsize = 12;
   constructor(private game: GameService,
     private router: Router) { }
 
@@ -22,7 +22,7 @@ export class LandingComponent implements OnInit {
   }
 
   newGame() {
-    this.game.initGame(this.selectedValue);
+    this.game.initGame(this.selectedsize);
     this.navigateToGame();
   }
 

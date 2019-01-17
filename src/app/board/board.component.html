@@ -3,11 +3,23 @@
     <img src="assets/images/cards/supercharge.png" width="30" height="30" class="d-inline-block align-top" alt="">
     Memory Game
   </a>
+  <div class="form form-inline">
+    <select class="custom-select mr-sm-2" [(ngModel)]="selectedsize">
+      <option *ngFor="let s of decksizes">{{s}}</option>
+    </select>
+    <button class="btn btn-danger my-2 my-sm-0" (click)="New()">Start New Game</button>
+  </div>
 </nav>
 <div *ngIf="state$ | async as state">
-  <p>current tries:{{state.tries}}</p>
-  <p>best:{{state.best}}</p>
-  <button (click)="Restart()">Restart</button>
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-text">
+      current tries:{{state.tries}}
+    </span>
+    <span class="navbar-text">
+      best:{{state.best}}
+    </span>
+    <button (click)="Restart()">Restart</button>
+  </nav>
   <div class="card-deck">
     <app-card *ngFor="let card of state.cards; index as i" [card]=card [i]=i></app-card>
   </div>
