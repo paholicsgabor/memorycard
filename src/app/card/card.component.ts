@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Card, Cardstate } from '../card';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-card',
@@ -10,16 +11,15 @@ import { Card, Cardstate } from '../card';
 export class CardComponent implements OnInit {
 
   @Input() card: Card;
+  @Input() i: number;
 
-  @Output() cardClick = new EventEmitter();
-
-  constructor() { }
+  constructor(private game: GameService) { }
 
   ngOnInit() {
   }
 
   get class() {
-    return this.card.state === Cardstate.Ready ? 'card bg-dark' : 'card';
+    return this.card.state === Cardstate.Ready ? 'card mb-3 bg-dark' : 'card mb-3';
   }
 
   get src() {
@@ -29,6 +29,6 @@ export class CardComponent implements OnInit {
   }
 
   onClick() {
-    if (this.card.state === Cardstate.Closed) { this.cardClick.emit(this.card.no); }
+    if (this.card.state === Cardstate.Closed) {  this.game.cardClick(this.i); }
   }
 }
