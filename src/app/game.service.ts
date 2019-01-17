@@ -16,15 +16,7 @@ export class GameService {
   }
 
   constructor() {
-    this.cards = [
-      { no: 0, state: Cardstate.Open },
-      { no: 1, state: Cardstate.Closed },
-      { no: 2, state: Cardstate.Ready },
-      { no: 0, state: Cardstate.Open },
-      { no: 1, state: Cardstate.Closed },
-      { no: 2, state: Cardstate.Ready }
-    ];
-    this._cards$.next(this.cards);
+    this.initGame(10);
 
   }
 
@@ -42,6 +34,28 @@ export class GameService {
     } else {
       return false;
     }
+  }
+
+  private shuffleArray(array: Array<number>) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  initGame(n: number) {
+    const numbers = [];
+    for (let i = 0; i < n / 2; i++) {
+      numbers.push(i);
+      numbers.push(i);
+    }
+    this.shuffleArray(numbers);
+    console.log(numbers);
+    this.cards = [];
+    for (let i = 0; i < n; i++) {
+      this.cards.push({ no: numbers[i], state: Cardstate.Closed });
+    }
+    this._cards$.next(this.cards);
   }
 
   cardClick(i: number) {

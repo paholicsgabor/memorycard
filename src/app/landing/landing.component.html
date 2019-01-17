@@ -1,0 +1,11 @@
+<h1>
+  Supercharge
+</h1>
+<h2>
+  Memory Game
+</h2>
+<p>Deck size:</p>
+<select [(ngModel)]="selectedValue">
+  <option *ngFor="let s of size">{{s}}</option>
+</select>
+<button (click)="newGame()">Start New Game</button>

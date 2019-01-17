@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Card } from '../card';
 import { GameService } from '../game.service';
 import { Observable } from 'rxjs';

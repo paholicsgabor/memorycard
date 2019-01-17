@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Cardstate } from './card';
 
 @Component({
   selector: 'app-root',
