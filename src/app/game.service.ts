@@ -75,7 +75,7 @@ export class GameService {
     for (let i = 0; i < this.state.cards.length; i++) {
       if (this.state.cards[i].state !== Cardstate.Ready) { return; }
     }
-    this.state.best = this.state.tries;
+    if (this.state.tries < this.state.best) { this.state.best = this.state.tries; }
 
   }
 
